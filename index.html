@@ -42,7 +42,7 @@
   }
   .yes:active { transform: scale(.95); }
   /* 아니요를 누를수록 좋아요가 커짐 */
-  .btns .yes { position: relative; z-index: 1; transition: transform .35s cubic-bezier(.34,1.56,.64,1), font-size .35s; }
+  .btns .yes { position: relative; z-index: 10; transform-origin: left center; transition: transform .35s cubic-bezier(.34,1.56,.64,1), font-size .35s; }
   .btns .yes:active { transform: none; }
   .yes.full {
     position: fixed; inset: 0; z-index: 50; border-radius: 0; font-size: 40px;
@@ -50,7 +50,7 @@
   }
   @keyframes pulse { 50% { filter: brightness(1.12); } }
   .no {
-    position: relative; z-index: 5; border: 1px solid #eadde3; background: #fff; color: #9a8e9e;
+    position: relative; z-index: 1; border: 1px solid #eadde3; background: #fff; color: #9a8e9e;
     border-radius: 20px; padding: 8px 16px; font-size: 13px; cursor: pointer;
     white-space: nowrap; transition: font-size .3s, padding .3s, opacity .3s;
   }
@@ -84,7 +84,7 @@
   <!-- 1. 데이트 신청 -->
   <div class="step show" id="s1">
     <div class="big">🌸</div>
-    <h1>지율씨, 나랑 데이트할래요?</h1>
+    <h1>지율씨, 나랑 바다 보러 갈래요?</h1>
     <p class="sub">천천히 생각해도 괜찮아요.<br>그래도 대답은 하나뿐인 것 같지만요 😊</p>
     <div class="btns" id="btns1">
       <button class="yes" id="yes1" onclick="go(2)">좋아요 ♥</button>
@@ -140,7 +140,7 @@
   const noTexts = ["아니요 🙈", "정말요? 🥺", "다시 생각해 봐요", "진짜 진짜요? 😢", "마음 아파요 💔", "좋아요가 커지고 있어요…", "이제 선택지는 하나뿐 😆"];
   const yesTexts = ["좋아요 ♥", "좋아요 ♥", "좋아요 ♥♥", "좋아요 💕", "좋아요!! 💖", "제발 좋아요 🥹", "좋아요 💘"];
   const hints = ["", "앗, 손이 미끄러졌죠? 😆", "좋아요 버튼이 조금 커졌네요", "좋아요가 점점 자라는 중", "곧 화면이 좋아요로 가득 찰 거예요", "마지막 기회… 아니에요, 좋아요뿐이에요", ""];
-  const FULL_AT = noTexts.length - 1;
+  const FULL_AT = 5;
   let tries = 0;
   const no1 = document.getElementById('no1');
   const yes1 = document.getElementById('yes1');
@@ -156,7 +156,7 @@
       burst(15);
       return;
     }
-    yes1.style.transform = `scale(${1 + tries * 0.5})`;
+    yes1.style.transform = `scale(${1 + tries * 0.3})`;
     yes1.textContent = yesTexts[tries];
     no1.textContent = noTexts[tries];
     no1.style.fontSize = Math.max(10, 13 - tries) + 'px';
