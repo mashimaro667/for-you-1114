@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>지율씨에게 💌</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: linear-gradient(160deg, #fde7ef 0%, #f7eefc 50%, #e6f2fd 100%);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; color: #3a3340;
+  }
+  .heart-bg { position: fixed; bottom: -40px; font-size: 18px; opacity: .55; pointer-events: none; animation: rise linear forwards; }
+  @keyframes rise { to { transform: translateY(-115vh) rotate(25deg); opacity: 0; } }
+
+  .card {
+    position: relative; width: min(92vw, 420px); min-height: 430px;
+    background: rgba(255,255,255,.92); border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(225, 120, 160, .25);
+    padding: 34px 26px 30px; text-align: center;
+  }
+  .dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 22px; }
+  .dots span { width: 7px; height: 7px; border-radius: 4px; background: #f3c9d8; transition: all .3s; }
+  .dots span.on { width: 22px; background: #ec4f8c; }
+
+  .step { display: none; animation: fade .45s ease; }
+  .step.show { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+  h1 { font-size: 24px; margin-bottom: 10px; }
+  .sub { font-size: 14px; color: #8a7f8f; line-height: 1.6; margin-bottom: 26px; }
+  .big { font-size: 64px; margin: 6px 0 10px; }
+
+  .btns { display: flex; align-items: center; justify-content: center; gap: 14px; min-height: 120px; }
+  .yes {
+    border: 0; border-radius: 30px; padding: 15px 34px; font-size: 17px; font-weight: 700; color: #fff;
+    background: linear-gradient(135deg, #f7709e, #e2306f); box-shadow: 0 8px 20px rgba(226, 48, 111, .35);
+    cursor: pointer; transition: transform .25s;
+  }
+  .yes:active { transform: scale(.95); }
+  /* 아니요를 누를수록 좋아요가 커짐 */
+  .btns .yes { position: relative; z-index: 1; transition: transform .35s cubic-bezier(.34,1.56,.64,1), font-size .35s; }
+  .btns .yes:active { transform: none; }
+  .yes.full {
+    position: fixed; inset: 0; z-index: 50; border-radius: 0; font-size: 40px;
+    transform: none !important; animation: pulse 1.2s ease-in-out infinite;
+  }
+  @keyframes pulse { 50% { filter: brightness(1.12); } }
+  .no {
+    position: relative; z-index: 5; border: 1px solid #eadde3; background: #fff; color: #9a8e9e;
+    border-radius: 20px; padding: 8px 16px; font-size: 13px; cursor: pointer;
+    white-space: nowrap; transition: font-size .3s, padding .3s, opacity .3s;
+  }
+  .hint { font-size: 12px; color: #e2306f; min-height: 18px; margin-top: 6px; }
+
+  .info {
+    background: #fff5f9; border: 1px dashed #f3b4cb; border-radius: 18px;
+    padding: 18px; margin: 4px 0 24px; font-size: 15px; line-height: 1.7;
+  }
+  .info b { color: #e2306f; font-size: 19px; }
+
+  .letter { text-align: left; }
+  .letter h1 { text-align: center; }
+  .paper {
+    background: #fffdf8; border-radius: 16px; padding: 22px 20px; margin: 10px 0 18px;
+    font-size: 14.5px; line-height: 1.9; color: #4a4048;
+    background-image: repeating-linear-gradient(transparent, transparent 26px, #f6e7ec 27px);
+    box-shadow: inset 0 0 0 1px #f3e3e9;
+  }
+  .paper .to { color: #e2306f; font-weight: 700; margin-bottom: 8px; }
+  .paper u { text-decoration: none; background: linear-gradient(transparent 60%, #ffd3e2 60%); font-weight: 700; }
+  .paper .from { text-align: right; margin-top: 10px; font-weight: 700; }
+  .center { text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="dots"><span class="on"></span><span></span><span></span><span></span><span></span></div>
+
+  <!-- 1. 데이트 신청 -->
+  <div class="step show" id="s1">
+    <div class="big">🌸</div>
+    <h1>지율씨, 나랑 데이트할래요?</h1>
+    <p class="sub">천천히 생각해도 괜찮아요.<br>그래도 대답은 하나뿐인 것 같지만요 😊</p>
+    <div class="btns" id="btns1">
+      <button class="yes" id="yes1" onclick="go(2)">좋아요 ♥</button>
+      <button class="no" id="no1">아니요 🙈</button>
+    </div>
+    <p class="hint" id="hint1"></p>
+  </div>
+
+  <!-- 2. 날짜 -->
+  <div class="step" id="s2">
+    <div class="big">📅</div>
+    <h1>언제 만날까요?</h1>
+    <p class="sub">제가 제일 좋은 날로 골라 봤어요.</p>
+    <div class="info"><b>11월 14일 토요일</b><br>하루 종일 비워 둘게요</div>
+    <button class="yes" onclick="go(3)">그날 좋아요 💕</button>
+  </div>
+
+  <!-- 3. 장소 -->
+  <div class="step" id="s3">
+    <div class="big">🌊</div>
+    <h1>어디로 갈까요?</h1>
+    <p class="sub">탁 트인 곳에서 같이 걷고 싶어서요.</p>
+    <div class="info"><b>동해 바다</b><br>파도 소리 들으면서 바닷가 산책해요</div>
+    <button class="yes" onclick="go(4)">바다 좋아요 🐚</button>
+  </div>
+
+  <!-- 4. 메뉴 -->
+  <div class="step" id="s4">
+    <div class="big">🍲</div>
+    <h1>뭐 먹을까요?</h1>
+    <p class="sub">바다 보고 나면 따끈한 게 생각날 거예요.</p>
+    <div class="info"><b>짬뽕순두부</b><br>얼큰하고 몽글몽글한 한 그릇</div>
+    <button class="yes" onclick="go(5)">맛있겠다 😋</button>
+  </div>
+
+  <!-- 5. 편지 -->
+  <div class="step letter" id="s5">
+    <h1>지율씨에게 보내는 편지 💌</h1>
+    <div class="paper">
+      <p class="to">To. 지율씨</p>
+      <p>대답해 줘서 고마워요.</p>
+      <p><u>11월 14일 토요일</u>, <u>동해 바다</u>에 가요.</p>
+      <p>같이 바닷가를 걷고, 바람이 차가워지면<br><u>짬뽕순두부</u> 한 그릇 먹으면서 몸 녹여요.</p>
+      <p>그날 하루는 지율씨가 웃는 일만 있게 준비할게요.</p>
+      <p class="from">From. 주성</p>
+    </div>
+    <div class="center"><button class="yes" onclick="celebrate()">약속했어요 🤙</button></div>
+  </div>
+</div>
+
+<script>
+  // 아니요를 누를 때마다 바뀌는 문구 (마지막 단계에서 좋아요가 화면을 덮음)
+  const noTexts = ["아니요 🙈", "정말요? 🥺", "다시 생각해 봐요", "진짜 진짜요? 😢", "마음 아파요 💔", "좋아요가 커지고 있어요…", "이제 선택지는 하나뿐 😆"];
+  const yesTexts = ["좋아요 ♥", "좋아요 ♥", "좋아요 ♥♥", "좋아요 💕", "좋아요!! 💖", "제발 좋아요 🥹", "좋아요 💘"];
+  const hints = ["", "앗, 손이 미끄러졌죠? 😆", "좋아요 버튼이 조금 커졌네요", "좋아요가 점점 자라는 중", "곧 화면이 좋아요로 가득 찰 거예요", "마지막 기회… 아니에요, 좋아요뿐이에요", ""];
+  const FULL_AT = noTexts.length - 1;
+  let tries = 0;
+  const no1 = document.getElementById('no1');
+  const yes1 = document.getElementById('yes1');
+
+  no1.addEventListener('click', () => {
+    tries++;
+    if (tries >= FULL_AT) {
+      // 좋아요가 화면 전체를 덮음
+      yes1.classList.add('full');
+      yes1.textContent = '좋아요 💘';
+      no1.style.display = 'none';
+      document.getElementById('hint1').textContent = '';
+      burst(15);
+      return;
+    }
+    yes1.style.transform = `scale(${1 + tries * 0.5})`;
+    yes1.textContent = yesTexts[tries];
+    no1.textContent = noTexts[tries];
+    no1.style.fontSize = Math.max(10, 13 - tries) + 'px';
+    no1.style.padding = `${Math.max(4, 8 - tries)}px ${Math.max(8, 16 - tries * 2)}px`;
+    document.getElementById('hint1').textContent = hints[tries];
+  });
+
+  function go(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('show'));
+    document.getElementById('s' + n).classList.add('show');
+    document.querySelectorAll('.dots span').forEach((d, i) => d.classList.toggle('on', i === n - 1));
+    burst(8);
+  }
+
+  function heart(emoji) {
+    const el = document.createElement('div');
+    el.className = 'heart-bg';
+    el.textContent = emoji || ['💗', '💕', '🌸', '💖', '🫧'][Math.floor(Math.random() * 5)];
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.fontSize = (14 + Math.random() * 18) + 'px';
+    el.style.animationDuration = (5 + Math.random() * 5) + 's';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 11000);
+  }
+  function burst(n) { for (let i = 0; i < n; i++) setTimeout(heart, i * 80); }
+  function celebrate() { for (let i = 0; i < 40; i++) setTimeout(() => heart(['💖', '🌊', '🍲', '💕', '✨'][i % 5]), i * 60); }
+
+  setInterval(heart, 900);
+  if (/^#[1-5]$/.test(location.hash)) go(+location.hash[1]);
+</script>
+</body>
+</html>
